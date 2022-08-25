@@ -1,23 +1,20 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import GlUtil from './gl/GlUtil';
+import Blob from './gl/Blob';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+class Main {
+  private _gl: GlUtil;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+  constructor() {
+    this._gl = new GlUtil();
+
+    this._addBlobs();
+  }
+
+  private _addBlobs(): void {
+    const blob1 = new Blob(1.75, 0.3, 0.5, 1.5, 0.12, Math.PI);
+
+    this._gl.scene.add(blob1);
+  }
+}
+
+new Main();
