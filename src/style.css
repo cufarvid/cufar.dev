@@ -1,5 +1,5 @@
-canvas {
-  position: fixed;
-  left: 0;
-  top: 0;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1d1e20;
 }

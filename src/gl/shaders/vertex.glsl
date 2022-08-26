@@ -11,7 +11,8 @@ uniform float uOffset;
 
 #include util/util.glsl
 #include util/rotate.glsl
-#include util/pnoise.glsl
+//#include util/pnoise.glsl
+#include util/snoise.glsl
 
 float map(float value, float inMin, float inMax, float outMin, float outMax) {
   return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
@@ -21,7 +22,8 @@ void main() {
   vUv = uv;
 
   float t = uTime * uSpeed;
-  float distortion = pnoise((normal + t) * uNoiseDensity, vec3(10.0)) * uNoiseStrength;
+//  float distortion = pnoise((normal + t) * uNoiseDensity, vec3(10.0)) * uNoiseStrength;
+  float distortion = snoise((normal + t) * uNoiseDensity) * uNoiseStrength;
 
   vec3 pos = position + (normal * distortion);
   float angle = sin(uv.y * uFreq + t) * uAmp;
