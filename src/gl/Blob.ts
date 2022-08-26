@@ -1,5 +1,5 @@
 import { IcosahedronGeometry, Mesh, Object3D, ShaderMaterial } from 'three';
-import { fragment, vertex } from './shaders';
+import { vertex, fragment } from './shaders';
 
 export default class Blob extends Object3D {
   private readonly _geometry: IcosahedronGeometry;
