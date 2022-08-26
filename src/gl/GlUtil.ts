@@ -1,13 +1,15 @@
 import { Clock, PerspectiveCamera, Scene, Vector2, WebGLRenderer } from 'three';
+import gsap from 'gsap';
+
 import Blob from './Blob';
 
 export default class GlUtil {
+  private readonly _renderer: WebGLRenderer;
   private readonly _camera: PerspectiveCamera;
-  private readonly _scene: Scene;
-  private _renderer: WebGLRenderer;
-  private _clock: Clock;
-  private _mouse: Vector2;
-  private _mouseTarget: Vector2;
+  private readonly _scene: Scene = new Scene();
+  private readonly _clock: Clock = new Clock();
+  private readonly _mouse: Vector2 = new Vector2();
+  private readonly _mouseTarget: Vector2 = new Vector2();
 
   public get scene(): Scene {
     return this._scene;
@@ -27,14 +29,7 @@ export default class GlUtil {
       0.1,
       1000
     );
-    this._camera.position.z = 5;
-
-    this._scene = new Scene();
-
-    this._clock = new Clock();
-
-    this._mouse = new Vector2();
-    this._mouseTarget = new Vector2();
+    this._camera.position.setZ(5);
 
     this._addListeners();
 
@@ -57,6 +52,11 @@ export default class GlUtil {
       blob.material.uniforms.uTime.value = this._clock.getElapsedTime();
     });
 
+    this._mouseTarget.set(
+      gsap.utils.interpolate(this._mouseTarget.x, this._mouse.x, 0.042),
+      gsap.utils.interpolate(this._mouseTarget.y, this._mouse.y, 0.042)
+    );
+
     this._scene.rotation.set(
       this._mouseTarget.y * 0.25,
       this._mouseTarget.x * 0.25,
@@ -77,7 +77,9 @@ export default class GlUtil {
   }
 
   private _mouseMove(event: MouseEvent): void {
-    this._mouse.setX((event.clientX / window.innerWidth) * 2 - 1);
-    this._mouse.setY(-(event.clientY / window.innerHeight) * 2 + 1);
+    this._mouse.set(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+    );
   }
 }
