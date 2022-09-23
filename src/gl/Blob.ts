@@ -1,4 +1,10 @@
-import { IcosahedronGeometry, Mesh, Object3D, ShaderMaterial } from 'three';
+import {
+  IcosahedronGeometry,
+  IUniform,
+  Mesh,
+  Object3D,
+  ShaderMaterial,
+} from 'three';
 import { vertex, fragment } from './shaders';
 
 export default class Blob extends Object3D {
@@ -16,7 +22,9 @@ export default class Blob extends Object3D {
     color: number,
     density: number,
     strength: number,
-    offset: number
+    offset: number,
+    frequency = 3,
+    amplitude = 6
   ) {
     super();
 
@@ -29,8 +37,8 @@ export default class Blob extends Object3D {
         uSpeed: { value: speed },
         uNoiseDensity: { value: density },
         uNoiseStrength: { value: strength },
-        uFreq: { value: 3 },
-        uAmp: { value: 6 },
+        uFreq: { value: frequency },
+        uAmp: { value: amplitude },
         uHue: { value: color },
         uOffset: { value: offset },
         red: { value: 0 },
@@ -47,5 +55,13 @@ export default class Blob extends Object3D {
     this._mesh = new Mesh(this._geometry, this._material);
 
     this.add(this._mesh);
+  }
+
+  public setUniformValue<T>(uniformName: string, value: T): void {
+    const uniform: IUniform = this._material.uniforms[uniformName];
+
+    if (!uniform) return;
+
+    uniform.value = value;
   }
 }

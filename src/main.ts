@@ -28,42 +28,28 @@ class Main {
 
   private _init(): void {
     this._gui.add(this._options, 'speed', 0, 1, 0.01).onChange((value) => {
-      if (this._blob) {
-        this._blob.material.uniforms.uSpeed.value = value;
-      }
+      this._blob?.setUniformValue('uSpeed', value);
     });
     this._gui.add(this._options, 'density', 0, 10, 0.1).onChange((value) => {
-      if (this._blob) {
-        this._blob.material.uniforms.uNoiseDensity.value = value;
-      }
+      this._blob?.setUniformValue('uNoiseDensity', value);
     });
     this._gui.add(this._options, 'strength', 0, 1, 0.01).onChange((value) => {
-      if (this._blob) {
-        this._blob.material.uniforms.uNoiseStrength.value = value;
-      }
+      this._blob?.setUniformValue('uNoiseStrength', value);
     });
     this._gui.add(this._options, 'hue', 0, 1, 0.01).onChange((value) => {
-      if (this._blob) {
-        this._blob.material.uniforms.uHue.value = value;
-      }
+      this._blob?.setUniformValue('uHue', value);
     });
     this._gui.add(this._options, 'offset', 0, 10, 0.1).onChange((value) => {
-      if (this._blob) {
-        this._blob.material.uniforms.uOffset.value = value;
-      }
+      this._blob?.setUniformValue('uOffset', value);
     });
   }
 
   private _addBlobs(): void {
     const blob1 = new Blob(1.75, 0.3, 0.5, 1.5, 0.12, Math.PI);
-    const blob2 = new Blob(1, 0.2, 0.2, 0.5, 0.12, Math.PI * 2);
-
-    blob1.position.x = -2;
-    blob2.position.x = 3;
 
     this._blob = blob1;
 
-    this._gl.scene.add(blob1, blob2);
+    this._gl.scene.add(blob1);
   }
 }
 
