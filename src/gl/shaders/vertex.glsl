@@ -1,37 +1,35 @@
 varying vec2 vUv;
-varying float vDistort;
+varying float vNoise;
 
 uniform float uTime;
-uniform float uSpeed;
-uniform float uNoiseStrength;
-uniform float uNoiseDensity;
-uniform float uFreq;
-uniform float uAmp;
-uniform float uOffset;
+uniform float uDisplace;
+uniform float uDecay;
+uniform float uSize;
+uniform float uComplex;
+uniform float uWaves;
+uniform float uHue;
 
 #include util/util.glsl
-#include util/rotate.glsl
-//#include util/pnoise.glsl
-#include util/snoise.glsl
+#include util/pnoise.glsl
 
-float map(float value, float inMin, float inMax, float outMin, float outMax) {
-  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+float turbulence(vec3 p) {
+  float t = -0.005;
+  for (float f = 1.0; f <= 1.0; f++){
+    float power = pow(1.3, f);
+    t += abs(pnoise(vec3(power * p), vec3(10.0, 10.0, 10.0)) / power);
+  }
+  return t;
 }
 
 void main() {
   vUv = uv;
 
-  float t = uTime * uSpeed;
-//  float distortion = pnoise((normal + t) * uNoiseDensity, vec3(10.0)) * uNoiseStrength;
-  float distortion = snoise((normal + t) * uNoiseDensity) * uNoiseStrength;
+  vNoise = (0.3 *  -uHue) * turbulence(uDecay * abs(normal + uTime));
 
-  vec3 pos = position + (normal * distortion);
-  float angle = sin(uv.y * uFreq + t) * uAmp;
-  pos = rotateY(pos, angle);
+  float noise = (2.0 *  -uWaves) * turbulence(uDecay * abs(normal + uTime));
+  float b = pnoise(uComplex * (position) + vec3((uDecay * 2.0) * uTime), vec3(100.0));
+  float displacement = -atan(noise) + tan(b * uDisplace);
+  vec3 p = position + (normal * displacement);
 
-  pos *= map(sin(uTime + uOffset), -1.0, 1.0, 1.0, 1.2);
-
-  vDistort = distortion;
-
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
+  gl_Position = (projectionMatrix * modelViewMatrix) * vec4(p, 1.0);
 }

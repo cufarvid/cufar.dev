@@ -1,23 +1,14 @@
-varying vec2 vUv;
-varying float vDistort;
+varying float vNoise;
 
 uniform float uTime;
-uniform float uHue;
-uniform float uAlpha;
-
-vec3 cosPalette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
-  return a + b * cos(6.28318530718 * (c * t + d));
-}
+uniform float uRed;
+uniform float uGreen;
+uniform float uBlue;
 
 void main() {
-  float distort = vDistort * 2.0;
+  float r = normalize(vNoise + uRed);
+  float g = cos(vNoise + uGreen);
+  float b = sin(vNoise + uBlue);
 
-  vec3 brightness = vec3(0.5, 0.5, 0.5);
-  vec3 contrast   = vec3(0.5, 0.5, 0.5);
-  vec3 oscilation = vec3(1.0, 1.0, 1.0);
-  vec3 phase      = vec3(0.0, 0.1, 0.2);
-
-  vec3 color = cosPalette(uHue + distort, brightness, contrast, oscilation, phase);
-
-  gl_FragColor = vec4(color, uAlpha);
+  gl_FragColor = vec4(r, g, b, 1.0);
 }
