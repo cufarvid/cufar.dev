@@ -8,7 +8,7 @@ class Main {
   private _gl: GlUtil;
   private _gui: GUI = new GUI();
   private _options = {
-    uSpeed: 0.4,
+    uSpeed: 0.25,
     scale: 1,
     uDecay: 1.2,
     uDisplace: 0.1,

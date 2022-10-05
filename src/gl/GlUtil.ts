@@ -10,6 +10,10 @@ export default class GlUtil {
   private readonly _clock: Clock = new Clock();
   private readonly _mouse: Vector2 = new Vector2();
   private readonly _mouseTarget: Vector2 = new Vector2();
+  private readonly _scroll = {
+    direction: true,
+    value: 0,
+  };
 
   public get scene(): Scene {
     return this._scene;
@@ -38,7 +42,8 @@ export default class GlUtil {
 
   private _addListeners(): void {
     window.addEventListener('resize', () => this._resize());
-    window.addEventListener('mousemove', (event) => this._mouseMove(event));
+    window.addEventListener('mousemove', (event) => this._onMouseMove(event));
+    window.addEventListener('wheel', () => this._onScroll());
   }
 
   private _animate(): void {
@@ -48,8 +53,9 @@ export default class GlUtil {
 
   private _render(): void {
     this._scene.children.forEach((mesh) => {
-      const { uSpeed, uTime } = (mesh as Blob).material.uniforms;
+      const { uSpeed, uTime, uColorFactor } = (mesh as Blob).material.uniforms;
       uTime.value = uSpeed.value * this._clock.getElapsedTime();
+      uColorFactor.value = this._scroll.value;
     });
 
     this._mouseTarget.set(
@@ -76,10 +82,24 @@ export default class GlUtil {
     this._camera.updateProjectionMatrix();
   }
 
-  private _mouseMove(event: MouseEvent): void {
+  private _onMouseMove(event: MouseEvent): void {
     this._mouse.set(
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1
     );
+  }
+
+  private _onScroll() {
+    const scroll = this._scroll;
+
+    if (scroll.direction) {
+      scroll.value += 0.01;
+
+      if (scroll.value > 1) scroll.direction = false;
+    } else {
+      scroll.value -= 0.01;
+
+      if (scroll.value < 0) scroll.direction = true;
+    }
   }
 }
