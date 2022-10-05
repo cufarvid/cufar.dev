@@ -25,6 +25,7 @@ export default class Blob extends Object3D {
       fragmentShader: fragment,
       uniforms: {
         uTime: { value: 0.1 },
+        uSpeed: { value: 0.4 },
         uDecay: { value: 1.2 },
         uSize: { value: 3 },
         uDisplace: { value: 0.1 },
@@ -34,6 +35,7 @@ export default class Blob extends Object3D {
         uRed: { value: 1.5 },
         uGreen: { value: 0.7 },
         uBlue: { value: 1.5 },
+        uColorFactor: { value: 0 },
       },
       defines: {
         PI: Math.PI,

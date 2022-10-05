@@ -48,8 +48,8 @@ export default class GlUtil {
 
   private _render(): void {
     this._scene.children.forEach((mesh) => {
-      const blob = mesh as Blob;
-      blob.material.uniforms.uTime.value = 0.4 * this._clock.getElapsedTime();
+      const { uSpeed, uTime } = (mesh as Blob).material.uniforms;
+      uTime.value = uSpeed.value * this._clock.getElapsedTime();
     });
 
     this._mouseTarget.set(

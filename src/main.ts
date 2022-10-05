@@ -8,9 +8,8 @@ class Main {
   private _gl: GlUtil;
   private _gui: GUI = new GUI();
   private _options = {
-    speed: 0.4,
+    uSpeed: 0.4,
     scale: 1,
-    perlins: 1.0,
     uDecay: 1.2,
     uDisplace: 0.1,
     uComplex: 0.1,
@@ -19,6 +18,7 @@ class Main {
     uRed: 1.5,
     uGreen: 0.7,
     uBlue: 1.5,
+    uColorFactor: 0,
   };
 
   private _blob: Blob | undefined;
@@ -32,39 +32,17 @@ class Main {
   }
 
   private _init(): void {
-    this._gui.add(this._options, 'speed', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('speed', value);
-    });
-    this._gui.add(this._options, 'scale', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setScale(value);
-    });
-    this._gui.add(this._options, 'perlins', 0, 10, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('perlins', value);
-    });
-    this._gui.add(this._options, 'uDecay', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uDecay', value);
-    });
-    this._gui.add(this._options, 'uDisplace', 0, 5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uDisplace', value);
-    });
-    this._gui.add(this._options, 'uComplex', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uComplex', value);
-    });
-    this._gui.add(this._options, 'uWaves', 0, 10, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uWaves', value);
-    });
-    this._gui.add(this._options, 'uHue', 0, 50, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uHue', value);
-    });
-    this._gui.add(this._options, 'uRed', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uRed', value);
-    });
-    this._gui.add(this._options, 'uGreen', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uGreen', value);
-    });
-    this._gui.add(this._options, 'uBlue', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uBlue', value);
-    });
+    this.addGuiOption('uSpeed', 0, 1)
+      .addGuiOption('uDecay', 0, 1)
+      .addGuiOption('uDisplace', 0, 5)
+      .addGuiOption('uComplex', 0, 1)
+      .addGuiOption('uWaves', 0, 50, 1)
+      .addGuiOption('uHue', 0, 50)
+      .addGuiOption('uRed', 0, 2.5)
+      .addGuiOption('uGreen', 0, 2.5)
+      .addGuiOption('uBlue', 0, 2.5)
+      .addGuiOption('uColorFactor', 0, 1)
+      .addGuiOption('scale', 0, 1, 0.01, (v) => this._blob?.setScale(v));
   }
 
   private _addBlobs(): void {
@@ -73,6 +51,24 @@ class Main {
     this._blob = blob1;
 
     this._gl.scene.add(blob1);
+  }
+
+  private addGuiOption(
+    propName: string,
+    min: number,
+    max: number,
+    step = 0.01,
+    callback?: (value: number) => void
+  ): Main {
+    this._gui.add(this._options, propName, min, max, step).onChange((value) => {
+      if (callback) {
+        callback(value);
+      } else {
+        this._blob?.setUniformValue(propName, value);
+      }
+    });
+
+    return this;
   }
 }
 
