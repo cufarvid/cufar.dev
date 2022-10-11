@@ -5,7 +5,8 @@ import {
   Object3D,
   ShaderMaterial,
 } from 'three';
-import { vertex, fragment } from './shaders';
+import { vertex, fragment } from '../shaders';
+import { TUniforms, YELLOW_CLOUD } from './templates';
 
 export default class Blob extends Object3D {
   private readonly _geometry: IcosahedronGeometry;
@@ -16,27 +17,14 @@ export default class Blob extends Object3D {
     return this._material;
   }
 
-  constructor(radius: number) {
+  constructor(uniforms: TUniforms, radius = 1) {
     super();
 
     this._geometry = new IcosahedronGeometry(radius, 64);
     this._material = new ShaderMaterial({
       vertexShader: vertex,
       fragmentShader: fragment,
-      uniforms: {
-        uTime: { value: 0.1 },
-        uSpeed: { value: 0.25 },
-        uDecay: { value: 1.2 },
-        uSize: { value: 3 },
-        uDisplace: { value: 0.1 },
-        uComplex: { value: 0.1 },
-        uWaves: { value: 20 },
-        uHue: { value: 4.0 },
-        uRed: { value: 1.5 },
-        uGreen: { value: 0.7 },
-        uBlue: { value: 1.5 },
-        uColorFactor: { value: 0 },
-      },
+      uniforms: uniforms,
       defines: {
         PI: Math.PI,
       },
@@ -58,5 +46,9 @@ export default class Blob extends Object3D {
 
   public setScale(value: number): void {
     this._geometry.scale(value, value, value);
+  }
+
+  public static YellowCloud(): Blob {
+    return new Blob(YELLOW_CLOUD);
   }
 }
