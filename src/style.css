@@ -1,17 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
 :root {
-  --bg-primary: #fff;
-  --bg-secondary: #1d1e20;
+  --c-primary: #fff;
+  --c-secondary: #1d1e20;
+  --c-tertiary: #ed931f;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-primary);
+  background-color: var(--c-primary);
+  font-family: 'Fira Code', monospace;
+  transition: background 0.2s linear;
+  overflow: hidden;
 }
 
 .dark-mode {
-  --bg-primary: #1d1e20;
-  --bg-secondary: #fff;
+  --c-primary: #1d1e20;
+  --c-secondary: #fff;
+  --c-tertiary: #fede00;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.content {
+  position: absolute;
+  top: 50vh;
+  flex-direction: column;
+}
+
+.content .header {
+  font-size: 5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.footer {
+  grid-area: footer;
+  position: absolute;
+  bottom: 0;
+}
+
+.footer a {
+  color: var(--c-secondary);
+  text-decoration: none;
+  transform: scale(1.42);
+  padding: 0.5rem;
+}
+
+.footer a:hover {
+  color: var(--c-tertiary);
 }
 
 .dark-mode-input {
@@ -34,7 +77,7 @@ body {
   align-items: center;
   border-radius: 3rem;
   padding: 0.125rem;
-  background-color: var(--bg-secondary);
+  background-color: var(--c-secondary);
   transform: scale(1.42);
   cursor: pointer;
 }
@@ -43,7 +86,7 @@ body {
   position: absolute;
   width: 1rem;
   height: 1rem;
-  background-color: var(--bg-primary);
+  background-color: var(--c-primary);
   border-radius: 50%;
   transition: transform 0.2s linear;
 }
@@ -57,5 +100,5 @@ body {
 }
 
 .ti-moon {
-  color: var(--bg-primary);
+  color: var(--c-primary);
 }
