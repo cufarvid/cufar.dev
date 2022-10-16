@@ -38,6 +38,13 @@ body {
   font-size: 5rem;
   font-weight: bold;
   line-height: 1;
+  opacity: 0.777;
+  color: var(--c-primary);
+  transition: color 0.2s linear;
+}
+
+.content .header:hover {
+  opacity: 1;
 }
 
 .footer {
