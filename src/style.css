@@ -1,13 +1,61 @@
 :root {
-  --bg-color: #fff;
+  --bg-primary: #fff;
+  --bg-secondary: #1d1e20;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color);
+  background-color: var(--bg-primary);
 }
 
 .dark-mode {
-  --bg-color: #1d1e20;
+  --bg-primary: #1d1e20;
+  --bg-secondary: #fff;
+}
+
+.dark-mode-input {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.dark-mode-input input {
+  position: absolute;
+  opacity: 0;
+}
+
+.dark-mode-input label {
+  position: relative;
+  width: 2rem;
+  height: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3rem;
+  padding: 0.125rem;
+  background-color: var(--bg-secondary);
+  transform: scale(1.42);
+  cursor: pointer;
+}
+
+.dark-mode-input .toggle {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--bg-primary);
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+.dark-mode-input .dark-mode-checkbox:checked + label .toggle {
+  transform: translateX(1rem);
+}
+
+.ti-sun {
+  color: #fede00;
+}
+
+.ti-moon {
+  color: var(--bg-primary);
 }

@@ -5,9 +5,24 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cufarvid | home</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
   </head>
   <body>
-    <button id="dark-mode-btn">Text</button>
+    <div class="dark-mode-input">
+      <input
+        type="checkbox"
+        class="dark-mode-checkbox"
+        id="dark-mode-checkbox"
+      />
+      <label for="dark-mode-checkbox">
+        <i class="ti ti-moon"></i>
+        <i class="ti ti-sun"></i>
+        <div class="toggle"></div>
+      </label>
+    </div>
     <canvas id="canvas"></canvas>
     <script type="module" src="/src/main.ts"></script>
   </body>

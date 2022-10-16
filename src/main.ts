@@ -16,13 +16,21 @@ class Main {
     this._addListeners();
     this._addBlobs();
     this._setColorScheme(this._colorScheme);
+
+    // Set initial checkbox state.
+    if (this._colorScheme === 'dark') {
+      const checkbox = document.getElementById(
+        'dark-mode-checkbox'
+      ) as HTMLInputElement;
+      if (checkbox) checkbox.checked = true;
+    }
   }
 
   private _addListeners(): void {
     // Toggle dark mode with button press
     document
-      .getElementById('dark-mode-btn')
-      ?.addEventListener('click', () => this._toggleDarkMode());
+      .getElementById('dark-mode-checkbox')
+      ?.addEventListener('change', () => this._toggleDarkMode());
 
     // Toggle dark mode with user setting preference
     window
