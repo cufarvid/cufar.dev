@@ -5,10 +5,43 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cufarvid | home</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
   </head>
   <body>
-    <button id="dark-mode-btn">Text</button>
+    <div class="dark-mode-input">
+      <input
+        type="checkbox"
+        class="dark-mode-checkbox"
+        id="dark-mode-checkbox"
+      />
+      <label for="dark-mode-checkbox">
+        <i class="ti ti-moon"></i>
+        <i class="ti ti-sun"></i>
+        <div class="toggle"></div>
+      </label>
+    </div>
+
+    <div class="content flex-center">
+      <div class="header">hello;</div>
+    </div>
+
+    <div class="footer flex-center">
+      <a href="https://www.linkedin.com/in/cufarvid" target="_blank">
+        <i class="ti ti-brand-linkedin"></i>
+      </a>
+      <a href="https://github.com/cufarvid" target="_blank">
+        <i class="ti ti-brand-github"></i>
+      </a>
+      <a href="mailto:vid@cufar.dev" target="_blank">
+        <i class="ti ti-mail"></i>
+      </a>
+    </div>
+
     <canvas id="canvas"></canvas>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
