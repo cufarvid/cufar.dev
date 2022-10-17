@@ -1,7 +1,7 @@
 import { Clock, PerspectiveCamera, Scene, Vector2, WebGLRenderer } from 'three';
 import gsap from 'gsap';
 
-import Blob from './Blob';
+import Blob from './blob/Blob';
 
 export default class GlUtil {
   private readonly _renderer: WebGLRenderer;
@@ -38,7 +38,7 @@ export default class GlUtil {
 
   private _addListeners(): void {
     window.addEventListener('resize', () => this._resize());
-    window.addEventListener('mousemove', (event) => this._mouseMove(event));
+    window.addEventListener('mousemove', (event) => this._onMouseMove(event));
   }
 
   private _animate(): void {
@@ -48,8 +48,8 @@ export default class GlUtil {
 
   private _render(): void {
     this._scene.children.forEach((mesh) => {
-      const blob = mesh as Blob;
-      blob.material.uniforms.uTime.value = 0.4 * this._clock.getElapsedTime();
+      const { uSpeed, uTime } = (mesh as Blob).material.uniforms;
+      uTime.value = uSpeed.value * this._clock.getElapsedTime();
     });
 
     this._mouseTarget.set(
@@ -76,7 +76,7 @@ export default class GlUtil {
     this._camera.updateProjectionMatrix();
   }
 
-  private _mouseMove(event: MouseEvent): void {
+  private _onMouseMove(event: MouseEvent): void {
     this._mouse.set(
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1

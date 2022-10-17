@@ -1,78 +1,78 @@
-import { GUI } from 'dat.gui';
+import gsap, { Power3 } from 'gsap';
 
 import './style.css';
 import GlUtil from './gl/GlUtil';
-import Blob from './gl/Blob';
+import Blob from './gl/blob/Blob';
 
 class Main {
+  private _colorScheme: 'dark' | 'light';
   private _gl: GlUtil;
-  private _gui: GUI = new GUI();
-  private _options = {
-    speed: 0.4,
-    scale: 1,
-    perlins: 1.0,
-    uDecay: 1.2,
-    uDisplace: 0.1,
-    uComplex: 0.1,
-    uWaves: 20,
-    uHue: 4.0,
-    uRed: 1.5,
-    uGreen: 0.7,
-    uBlue: 1.5,
-  };
-
   private _blob: Blob | undefined;
 
   constructor() {
     this._gl = new GlUtil();
+    this._colorScheme = this._getPreferredColorScheme();
 
-    this._init();
-
+    this._addListeners();
     this._addBlobs();
+    this._setColorScheme(this._colorScheme);
+
+    // Set initial checkbox state.
+    if (this._colorScheme === 'dark') {
+      const checkbox = document.getElementById(
+        'dark-mode-checkbox'
+      ) as HTMLInputElement;
+      if (checkbox) checkbox.checked = true;
+    }
   }
 
-  private _init(): void {
-    this._gui.add(this._options, 'speed', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('speed', value);
+  private _addListeners(): void {
+    // Toggle dark mode with button press
+    document
+      .getElementById('dark-mode-checkbox')
+      ?.addEventListener('change', () => this._toggleDarkMode());
+
+    // Toggle dark mode with user setting preference
+    window
+      .matchMedia?.('(prefers-color-scheme: dark)')
+      .addEventListener('change', () =>
+        this._setColorScheme(this._getPreferredColorScheme())
+      );
+  }
+
+  private _setColorScheme(scheme: 'dark' | 'light'): void {
+    if (!this._blob) return;
+
+    gsap.to(this._blob.material.uniforms.uColorFactor, {
+      value: scheme === 'dark' ? 1 : 0,
+      ease: Power3.easeIn,
     });
-    this._gui.add(this._options, 'scale', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setScale(value);
+
+    gsap.to(this._blob.material.uniforms.uWaves, {
+      value: 5,
+      yoyo: true,
+      repeat: 1,
     });
-    this._gui.add(this._options, 'perlins', 0, 10, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('perlins', value);
-    });
-    this._gui.add(this._options, 'uDecay', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uDecay', value);
-    });
-    this._gui.add(this._options, 'uDisplace', 0, 5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uDisplace', value);
-    });
-    this._gui.add(this._options, 'uComplex', 0, 1, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uComplex', value);
-    });
-    this._gui.add(this._options, 'uWaves', 0, 10, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uWaves', value);
-    });
-    this._gui.add(this._options, 'uHue', 0, 50, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uHue', value);
-    });
-    this._gui.add(this._options, 'uRed', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uRed', value);
-    });
-    this._gui.add(this._options, 'uGreen', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uGreen', value);
-    });
-    this._gui.add(this._options, 'uBlue', 0, 2.5, 0.01).onChange((value) => {
-      this._blob?.setUniformValue('uBlue', value);
-    });
+
+    document.body.classList.toggle('dark-mode');
+
+    this._colorScheme = scheme;
+  }
+
+  private _toggleDarkMode(): void {
+    this._setColorScheme(this._colorScheme === 'dark' ? 'light' : 'dark');
   }
 
   private _addBlobs(): void {
-    const blob1 = new Blob(1);
+    this._blob = Blob.YellowCloud();
 
-    this._blob = blob1;
+    this._gl.scene.add(this._blob);
+  }
 
-    this._gl.scene.add(blob1);
+  private _getPreferredColorScheme(): 'dark' | 'light' {
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 }
 
