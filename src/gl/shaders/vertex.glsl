@@ -24,9 +24,9 @@ float turbulence(vec3 p) {
 void main() {
   vUv = uv;
 
-  vNoise = (0.3 *  -uHue) * turbulence(uDecay * abs(normal + uTime));
+  vNoise = (0.3 * -uHue) * turbulence(uDecay * abs(normal + uTime));
 
-  float noise = (2.0 *  -uWaves) * turbulence(uDecay * abs(normal + uTime));
+  float noise = (2.0 * -uWaves) * turbulence(uDecay * abs(normal + uTime));
   float b = pnoise(uComplex * (position) + vec3((uDecay * 2.0) * uTime), vec3(100.0));
   float displacement = -atan(noise) + tan(b * uDisplace);
   vec3 p = position + (normal * displacement);

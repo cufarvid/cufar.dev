@@ -11,8 +11,13 @@ body {
   padding: 0;
   background-color: var(--c-primary);
   font-family: 'Fira Code', monospace;
-  transition: background 0.2s linear;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  transition: background 0.2s linear;
 }
 
 .dark-mode {
@@ -28,14 +33,9 @@ body {
   width: 100%;
 }
 
-.content {
-  position: absolute;
-  top: 50vh;
-  flex-direction: column;
-}
-
-.content .header {
-  font-size: 5rem;
+main .header {
+  margin-top: 50px;
+  font-size: 10vw;
   font-weight: bold;
   line-height: 1;
   opacity: 0.777;
@@ -43,25 +43,23 @@ body {
   transition: color 0.2s linear;
 }
 
-.content .header:hover {
+main .header:hover {
   opacity: 1;
 }
 
-.footer {
-  grid-area: footer;
-  position: absolute;
-  bottom: 0;
-}
-
-.footer a {
+footer a {
   color: var(--c-secondary);
   text-decoration: none;
-  transform: scale(1.42);
   padding: 0.5rem;
 }
 
-.footer a:hover {
+footer a:hover {
   color: var(--c-tertiary);
+}
+
+canvas {
+  position: absolute;
+  z-index: -1;
 }
 
 .dark-mode-input {
@@ -102,10 +100,10 @@ body {
   transform: translateX(1rem);
 }
 
-.ti-sun {
+.icon-tabler-sun {
   color: #fede00;
 }
 
-.ti-moon {
+.icon-tabler-moon {
   color: var(--c-primary);
 }
