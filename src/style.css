@@ -41,6 +41,7 @@ main .header {
   opacity: 0.777;
   color: var(--c-primary);
   transition: color 0.2s linear;
+  user-select: none;
 }
 
 main .header:hover {
